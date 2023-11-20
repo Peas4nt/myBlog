@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/public/styles/global.css">
+
+</head>
+
+<body>
+  <div class="container mt-5">
+
+    <!-- Blog Comments Start -->
+    <div class="card text-bg-dark col-md-6 col-10 mb-2">
+      <!-- Comments body -->
+      <div class="card-body">
+        <!-- Comments User -->
+        <div class="position-relative d-flex">
+          <!-- User name and image -->
+          <div class="d-flex align-items-center" style="width: 50%;">
+            <img src="/public/imgs/photo_2022-03-14_08-41-51.jpg" class="rounded-circle mr-2" alt="User Profile"
+              style="width: 40px; height: 40px;">
+            <h5 class="ms-2">Vladislavs</h5>
+          </div>
+          <!-- Comments settings -->
+          <div class="position-absolute end-0">
+            <div class="dropdown">
+              <button class="btn text-bg-dark" data-bs-toggle="dropdown">
+                <i class="bi bi-three-dots"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li><a class="dropdown-item" href="#">View post</a></li>
+                <!-- Post viewers settings -->
+                <li><a class="dropdown-item" href="#">Subscribe to Vladislavs</a></li>
+                <!-- Post owner settings -->
+                <li><a class="dropdown-item" href="#">Edit post</a></li>
+                <li><a class="dropdown-item text-danger" href="#">Delete post</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- Comments text -->
+        <div class="ms-5">
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+            content.
+            This content is a little bit longer.</p>
+          <p class="card-text"><small>Last updated 3 mins ago</small></p>
+          <!-- Comments Image -->
+          <div class="row card-body image-container" data-bs-toggle="modal" data-bs-target="#imageCarouselModal1">
+            <img loading="lazy" src="/public/imgs/Screenshot_1.png" class="col-6" alt="Image 1"
+              style="cursor: pointer;">
+            <img loading="lazy" src="/public/imgs/Screenshot_1.png" class="col-6" alt="Image 2"
+              style="cursor: pointer;">
+            <img loading="lazy" src="/public/imgs/WitcherMap_8k_borders.jpg" class="col-6" alt="Image 2"
+              style="cursor: pointer;">
+            <div class="col-6 position-relative image-container">
+              <div class="overlay"><span class="image-num">+4</span></div>
+              <img class="col-12" src="/public/imgs/WitcherMap_8k_borders.jpg" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- Comment End -->
+      <div class="card-footer">
+        <!-- Like Icon -->
+        <button href="#" class="btn text-bg-dark text-danger">
+          <i class="bi bi-heart-fill"></i>123332
+        </button>
+        <!-- Views Icon -->
+        <a href="#" class="btn text-bg-dark text-info">
+          <i class="bi bi-eye-fill"></i>123123
+        </a>
+        <!-- Comments Icon -->
+        <a href="#" class="btn text-bg-dark">
+          <i class="bi bi-chat-dots-fill"></i>123321
+        </a>
+      </div>
+    </div>
+
+    <!-- Modal window for images -->
+    <div class="modal fade" id="imageCarouselModal1" tabindex="-1" aria-labelledby="carouselModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-dark">
+          <div class="modal-header">
+            <h5 class="modal-title text-bg-dark" id="carouselModalLabel">Image Gallery</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body d-flex justify-content-center">
+            <!-- Carousel -->
+            <div id="carouselImages" class="carousel slide">
+              <div class="carousel-inner text-center">
+                <div class="carousel-item active">
+                  <img loading="lazy" src="/public/imgs/Screenshot_1.png" class="d-block mx-auto" alt="Image 1"
+                    style="max-width: 100%; height: auto;">
+                </div>
+                <div class="carousel-item">
+                  <img loading="lazy" src="/public/imgs/photo_2022-03-14_08-41-51.jpg" class="d-block mx-auto"
+                    alt="Image 2" style="max-width: 100%; height: auto;">
+                </div>
+                <div class="carousel-item">
+                  <img loading="lazy" src="/public/imgs/WitcherMap_8k_borders.jpg" class="d-block mx-auto" alt="Image 2"
+                    style="max-width: 100%; height: auto;">
+                </div>
+                <!-- Add more .carousel-item elements for each additional image -->
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselImages" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselImages" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+            <!-- End Carousel -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+</html>
