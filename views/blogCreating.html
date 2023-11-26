@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/public/styles/global.css">
+  <link rel="stylesheet" href="/public/styles/blogCreating.css">
+</head>
+
+<body>
+  <!-- navbar -->
+  <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark border-bottom border-body" data-bs-theme="dark">
+    <div class="container col-md-6 col-12">
+      <a class="navbar-brand" href="#">Twitter 2.0</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Link</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+          </li>
+        </ul>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- Blogs container -->
+  <div class="blogs">
+    <!-- Blog Post Start -->
+    <div class="card text-bg-dark col-md-4 col-10 mb-2">
+      <!-- Blog User -->
+      <div class="card-header position-relative d-flex">
+        <!-- User name and image -->
+        <div class="d-flex align-items-center" style="width: 50%;">
+          <img src="/public/imgs/photo_2022-03-14_08-41-51.jpg" class="rounded-circle mr-2" alt="User Profile"
+            style="width: 40px; height: 40px;">
+          <h5 class="ms-2">Vladislavs</h5>
+        </div>
+        <!-- blog settings -->
+        <div class="position-absolute end-0">
+          <div class="dropdown">
+            <button class="btn text-bg-dark" data-bs-toggle="dropdown">
+              <i class="bi bi-three-dots"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="#">Status: Public</a></li>
+              <li><a class="dropdown-item" href="#">Status: Private</a></li>
+              <li><a class="dropdown-item text-danger" href="#">Delete post</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Blog text -->
+      <div class="card-body">
+        <div class="card-text form-floating ">
+          <textarea class="blog-text form-control text-bg-dark" placeholder="Leave a comment here" id="floatingTextarea"
+            style="height: 200px" minlength="1" maxlength="255"></textarea>
+          <label for="floatingTextarea">Yours blog text</label>
+        </div>
+        <p class="card-text"><small><span id="letter-counter">0</span>/255</small></p>
+      </div>
+
+
+      <!-- Post Image -->
+      <div class="card-body">
+        <div class="container py-5">
+          <h2 class="mb-4">Download and preview image</h2>
+          <input type="file" id="imageInput" class="form-control mb-3" accept="image/*" multiple>
+          <div class="image-preview-container" id="previewContainer"></div>
+        </div>
+
+
+
+        <!-- Blog Post End -->
+        <div class="card-footer">
+          <!-- Like Icon -->
+          <button href="#" class="btn text-bg-dark text-danger" disabled>
+            <i class="bi bi-heart-fill"></i>0
+          </button>
+          <!-- Views Icon -->
+          <a href="#" class="btn text-bg-dark text-info">
+            <i class="bi bi-eye-fill"></i>0
+          </a>
+          <!-- Comments Icon -->
+          <a href="#" class="btn text-bg-dark">
+            <i class="bi bi-chat-dots-fill"></i>0
+          </a>
+        </div>
+      </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+<script>
+  // letter counter
+  const blogText = document.querySelector(".blog-text")
+  const letCount = document.querySelector("#letter-counter")
+
+  // count letters
+  blogText.addEventListener("input", charCounter)
+  function charCounter() {
+    const charCount = blogText.value.length
+    letCount.innerHTML = charCount
+    // make text red if text lenght = 255
+    if (charCount === 255) {
+      letCount.className = "text-danger"
+    } else {
+      letCount.className = ""
+    }
+  }
+
+  // images preview
+  let currentFiles = [];
+  let newFiles = [];
+  const previewContainer = document.getElementById('previewContainer');
+
+  document.getElementById('imageInput').addEventListener('change', function (event) {
+    newFiles = event.target.files
+    updateFileList();
+  });
+
+  // update preview files list 
+  function updateFileList(fileList) {
+    previewContainer.innerHTML = "";
+
+    currentFiles.forEach((file, index) => showFile(file, index));
+
+    Array.from(newFiles).forEach((file, index) => {
+      if (file.type.startsWith('image/')) {
+        currentFiles.push(file);
+        showFile(file, index);
+      }
+    });
+    newFiles = [];
+    console.log(currentFiles)
+  }
+
+  // add file to files preview
+  function showFile(file, index) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const imgContainer = document.createElement('div');
+      imgContainer.classList.add('image-preview');
+      imgContainer.innerHTML += `
+        <img src="${e.target.result}" alt="Image Preview">
+        <button class="btn btn-sm btn-danger delete-btn" id="${index}">&times;</button>
+        `;
+      previewContainer.appendChild(imgContainer);
+
+      imgContainer.querySelector('.delete-btn').addEventListener('click', function () {
+        removeFile(parseInt(this.id));
+      });
+    };
+    reader.readAsDataURL(file);
+
+  }
+
+  // remove file from preview
+  function removeFile(index) {
+    currentFiles.splice(index, 1);
+    updateFileList()
+  }
+</script>
+
+</html>

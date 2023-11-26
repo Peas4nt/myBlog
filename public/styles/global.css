@@ -1,37 +1,137 @@
 body {
-  background-color: rgb(32, 32, 32);
+	background-color: rgb(32, 32, 32);
+	min-height: 100vh;
 }
 
+/* For blogs */
+.blogs {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
 
 .image-container {
-  max-height: 600px;
-  overflow-y: scroll;
+	max-height: 600px;
+	overflow-y: scroll;
 }
-
 
 .image-container::-webkit-scrollbar {
-  display: none;
+	display: none;
 }
 
 .image-container {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
 }
 
 .image-container img {
-  max-height: 400px;
+	max-height: 400px;
 }
 
 .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2em;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 2em;
+}
+
+.icons {
+	display: flex;
+}
+
+.icons div {
+	display: flex;
+	padding-right: 10px;
+}
+
+/* beatiful heart with animation */
+.con-like {
+	--red: rgb(255, 50, 50);
+	position: relative;
+	width: 17px;
+	height: 17px;
+}
+
+.con-like .like {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	z-index: 20;
+	cursor: pointer;
+}
+
+.con-like .checkmark {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.con-like .outline,
+.con-like .filled {
+	fill: var(--red);
+	position: absolute;
+}
+
+.con-like .filled {
+	animation: kfr-filled 0.5s;
+	display: none;
+}
+
+.con-like .celebrate {
+	position: absolute;
+	animation: kfr-celebrate 0.5s;
+	animation-fill-mode: forwards;
+	display: none;
+}
+
+.con-like .poly {
+	stroke: var(--red);
+	fill: var(--red);
+}
+
+.con-like .like:checked ~ .checkmark .filled {
+	display: block;
+}
+
+.con-like .like:checked ~ .checkmark .celebrate {
+	display: block;
+}
+
+@keyframes kfr-filled {
+	0% {
+		opacity: 0;
+		transform: scale(0);
+	}
+
+	50% {
+		opacity: 1;
+		transform: scale(1.2);
+	}
+}
+
+@keyframes kfr-celebrate {
+	0% {
+		transform: scale(0);
+	}
+
+	50% {
+		opacity: 0.8;
+	}
+
+	100% {
+		transform: scale(1.2);
+		opacity: 0;
+		display: none;
+	}
 }

@@ -1,0 +1,18 @@
+.image-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.image-preview {
+  position: relative;
+}
+
+.image-preview img {
+  width: 120px;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
