@@ -82,7 +82,7 @@
         <p>Description</p>
         <small>Joined <span>15.15.15</span></small>
         <div class="mt-2">
-          <button class="btn btn-outline-primary">Folow</button>
+          <button class="btn btn-outline-primary follow">Folow</button>
         </div>
       </div>
       <!-- Profile icons -->
@@ -99,4 +99,22 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
+  <script>
+    const dbFollowBool = ''
+    let followBool = false ?? dbFollowBool;
+    document.querySelector(".follow").addEventListener("click", function(e) {
+      if (!followBool) {
+        this.innerHTML = "Followed"
+        followBool = true
+      } else {
+        this.innerHTML = "Follow"
+        followBool = false
+      }
+      followQuery(followBool);
+    });
+
+    function followQuery(bool) {
+      
+    }
+  </script>
 </html>
