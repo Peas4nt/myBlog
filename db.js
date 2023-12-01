@@ -1,22 +1,28 @@
 import mysql from "mysql2/promise";
+import dotenv from 'dotenv';
+dotenv.config();
 
-// db connection
-const connection = mysql.createConnection({
+// Create poll connection
+const pool = mysql.createPool({
 	host: "localhost",
 	user: "root",
-	database: "usersdb",
+	database: "myblog",
 	password: "",
+	waitForConnections: true,
+	connectionLimit: 10,
+	queueLimit: 0
 });
 
-// Test the connection
-connection
-	.then((conn) => {
-		console.log("Connection successful");
-		return conn;
-	})
-	.catch((err) => {
-		console.error("DB Error: " + err.message);
-	});
+export const testConnection = async () => {
+	try {
+		const [rows] = await pool.query('SELECT 1 + 1 AS solution');
+		console.log("DB connection successful");
+	} catch (error) {
+		return error
+	}
+}
 
-// Export the connection
-export default connection;
+// Get db pool connection
+export const getConnection = async () => {
+	return await pool.getConnection();
+};

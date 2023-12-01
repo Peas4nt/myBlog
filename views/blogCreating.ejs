@@ -8,53 +8,13 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="/public/styles/global.css">
-  <link rel="stylesheet" href="/public/styles/blogCreating.css">
+  <link rel="stylesheet" href="/styles/global.css">
+  <link rel="stylesheet" href="/styles/blogCreating.css">
 </head>
 
 <body>
-  <!-- navbar -->
-  <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark border-bottom border-body" data-bs-theme="dark">
-    <div class="container col-md-6 col-12">
-      <a class="navbar-brand" href="#">Twitter 2.0</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-          </li>
-        </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-      </div>
-    </div>
-  </nav>
-
-
+  <%- include('./components/navbar.ejs') %>
+  
   <!-- Blogs container -->
   <div class="blogs">
     <!-- Blog Post Start -->
@@ -63,9 +23,9 @@
       <div class="card-header position-relative d-flex">
         <!-- User name and image -->
         <div class="d-flex align-items-center" style="width: 50%;">
-          <img src="/public/imgs/photo_2022-03-14_08-41-51.jpg" class="rounded-circle mr-2" alt="User Profile"
+          <img src="<%= user.img %>" class="rounded-circle mr-2" alt="User Profile"
             style="width: 40px; height: 40px;">
-          <h5 class="ms-2">Vladislavs</h5>
+          <h5 class="ms-2"><%= user.username %></h5>
         </div>
         <!-- blog settings -->
         <div class="position-absolute end-0">
@@ -85,13 +45,12 @@
       <!-- Blog text -->
       <div class="card-body">
         <div class="card-text form-floating ">
-          <textarea class="blog-text form-control text-bg-dark" placeholder="Leave a comment here" id="floatingTextarea"
+          <textarea class="blog-text form-control text-bg-dark" id="floatingTextarea"
             style="height: 200px" minlength="1" maxlength="255"></textarea>
           <label for="floatingTextarea">Yours blog text</label>
         </div>
         <p class="card-text"><small><span id="letter-counter">0</span>/255</small></p>
       </div>
-
 
       <!-- Post Image -->
       <div class="card-body">
@@ -100,8 +59,6 @@
           <input type="file" id="imageInput" class="form-control mb-3" accept="image/*" multiple>
           <div class="image-preview-container" id="previewContainer"></div>
         </div>
-
-
 
         <!-- Blog Post End -->
         <div class="card-footer">
