@@ -21,6 +21,27 @@ export const getCreate = async (req, res) => {
 			user: user[0],
 		});
 		connection.release();
+	} catch (error) {}
+};
+
+export const postCreate = async (req, res) => {
+	const images = req.files;
+	const text = req.body.text;
+	const status = req.body.status;
+	const imagePaths = images.map((file) => {
+		return "/uploads/blogs/" + file.filename; // Путь для доступа через веб
+	});
+
+	// db variables
+	const id = 1;
+	const data = [id, text, JSON.stringify(imagePaths), status];
+	const sql = `INSERT INTO vt_blogs (user_id, text, img, status)
+	VALUES (?, ?, ?, ?);`;
+	try {
+		// Вывод путей к изображениям в консоль
+		const connection = await getConnection();
+		await connection.query(sql, data);
+		connection.release();
 	} catch (error) {
 		console.log(error);
 		res.status(500).json({
@@ -28,8 +49,6 @@ export const getCreate = async (req, res) => {
 		});
 	}
 };
-
-export const postCreate = (req, res) => {};
 
 export const update = (req, res) => {};
 
