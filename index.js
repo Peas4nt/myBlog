@@ -19,6 +19,7 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use("/uploads", express.static("uploads"));
 
+// multer storage configuration
 const storage = multer.diskStorage({
 	// file destination save
 	destination: function (req, file, cb) {
@@ -36,8 +37,11 @@ const upload = multer({ storage: storage });
 
 // routes
 // Blog creating
-app.get("/", blogController.getCreate);
-app.post("/", upload.array("images"), blogController.postCreate);
+
+app.get("/", blogController.getAll);
+
+app.get("/blog/create", blogController.getCreate);
+app.post("/blog/create", upload.array("images"), blogController.postCreate);
 
 // start server function
 const start = async () => {
