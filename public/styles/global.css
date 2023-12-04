@@ -67,9 +67,11 @@ body {
 	display: flex;
 }
 
-.icons div {
+.icons .icon {
 	display: flex;
-	padding-right: 10px;
+	margin-right: 15px;
+	justify-content: center;
+	align-items: center;
 }
 
 /* beatiful heart with animation */

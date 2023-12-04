@@ -43,6 +43,9 @@ app.get("/", blogController.getAll);
 app.get("/blog/create", blogController.getCreate);
 app.post("/blog/create", upload.array("images"), blogController.postCreate);
 
+app.post("/blog/like", upload.none(), blogController.postLike)
+
+
 // start server function
 const start = async () => {
 	// check db connection

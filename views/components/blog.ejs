@@ -89,9 +89,9 @@
 		<!-- Blog Post End -->
 		<div class="card-footer icons">
 			<!-- Like Icon -->
-			<div>
+			<div class="icon">
 				<div class="con-like">
-					<input class="like" type="checkbox" title="like" />
+					<input class="like" type="checkbox" title="like" <%= (blog.likestatus == 1)? "checked" : ""%> />
 					<div class="checkmark">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -147,11 +147,11 @@
 				<span class="likes" id="<%= blog.id %>"><%= blog.likes %></span>
 			</div>
 			<!-- Views Icon -->
-			<div class="text-info">
+			<div class="icon text-info">
 				<i class="bi bi-eye-fill"></i><%= blog.views %>
 			</div>
 			<!-- Comments Icon -->
-			<div><i class="bi bi-chat-dots-fill"></i><%= blog.comments %></div>
+			<div class="icon"><i class="bi bi-chat-dots-fill"></i><%= blog.comments %></div>
 		</div>
 	</div>
 
