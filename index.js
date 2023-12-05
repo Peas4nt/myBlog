@@ -36,13 +36,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // routes
-// Blog creating
-
+// Main page with all blogs
 app.get("/", blogController.getAll);
 
+// Blog creating
 app.get("/blog/create", blogController.getCreate);
 app.post("/blog/create", upload.array("images"), blogController.postCreate);
-
+// blog like
 app.post("/blog/like", upload.none(), blogController.postLike)
 
 

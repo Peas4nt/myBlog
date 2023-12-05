@@ -36,6 +36,7 @@ export const getAll = async (req, res) => {
 		});
 
 		res.render("index", {
+			page: "home",
 			user: user[0],
 			blogs,
 		});
@@ -66,6 +67,7 @@ export const getCreate = async (req, res) => {
 		const [user] = await connection.query(sql, data);
 
 		res.render("blogCreating", {
+			page: "blogCreate",
 			user: user[0],
 		});
 		connection.release();

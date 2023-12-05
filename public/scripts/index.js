@@ -1,3 +1,7 @@
+function myhref(web){
+	window.location.href = web;
+}
+
 const likeCheckboxs = document.querySelectorAll(".like");
 likeCheckboxs.forEach((element) =>
 	element.addEventListener("change", function (e) {

@@ -1,6 +1,6 @@
-<div class="blog">
+<div id="<%= blog.id %>" class="blog">
 	<!-- Blog Post Start -->
-	<div class="card text-bg-dark col-md-4 col-10 mb-2" id="<%= blog.id %>">
+	<div class="card text-bg-dark col-md-4 col-10 mb-2">
 		<!-- Blog User -->
 		<div class="card-header position-relative d-flex">
 			<!-- User name and image -->
@@ -25,7 +25,7 @@
 								>Subscribe to <%= blog.username %></a
 							>
 						</li>
-						<li><a class="dropdown-item" href="#">View post</a></li>
+						<li><a class="dropdown-item" href="/blog/<%= blog.id %>">View post</a></li>
 						<li><a class="dropdown-item" href="#">Edit post</a></li>
 						<li>
 							<a class="dropdown-item text-danger" href="#"
@@ -38,7 +38,7 @@
 		</div>
 
 		<!-- Blog text -->
-		<div class="card-body">
+		<div class="card-body" style="cursor: pointer;" onclick="myhref('/blog/<%= blog.id %>');">
 			<p class="card-text">
 				<%= blog.text %>
 			</p>
@@ -89,7 +89,7 @@
 		<!-- Blog Post End -->
 		<div class="card-footer icons">
 			<!-- Like Icon -->
-			<div class="icon">
+			<div class="icon" title="like">
 				<div class="con-like">
 					<input class="like" type="checkbox" title="like" <%= (blog.likestatus == 1)? "checked" : ""%> />
 					<div class="checkmark">
@@ -146,12 +146,14 @@
 				</div>
 				<span class="likes" id="<%= blog.id %>"><%= blog.likes %></span>
 			</div>
+
+			<!-- Comments Icon -->
+			<div class="icon" title="comments"><i class="bi bi-chat-dots-fill" onclick="myhref('/blog/<%= blog.id %>');"></i><%= blog.comments %></div>
+
 			<!-- Views Icon -->
-			<div class="icon text-info">
+			<div class="icon text-info" title="views">
 				<i class="bi bi-eye-fill"></i><%= blog.views %>
 			</div>
-			<!-- Comments Icon -->
-			<div class="icon"><i class="bi bi-chat-dots-fill"></i><%= blog.comments %></div>
 		</div>
 	</div>
 
