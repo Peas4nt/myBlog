@@ -16,11 +16,12 @@
   <%- include('./components/navbar.ejs') %>
   <!-- Main -->
   <div class="blogs">
-    <%- include('./components/blog.ejs', { blog, link: false }) %>
+    <%- include('./components/comment.ejs', { comm: comm, link: false, accordion: false }) %>
 
     <!-- Errors -->
     <div class="alerts text-bg-dark col-md-4 col-10"></div>
 
+    <% if (comm.comment_id == null) { %>
     <!-- Comment input -->
     <div class="comment-input">
       <div class="accordion col-md-4 col-10 mb-2">
@@ -44,7 +45,7 @@
                   </p>
                 </div>
                 <div class="container d-flex justify-content-end">
-                  <button type="button" id='[<%= blog.id %>, ""]' class="btn btn-success submit-btn">
+                  <button type="button" id='[<%= comm.blog_id %>, "<%= comm.id %>"]' class="btn btn-success submit-btn">
                     Submit comment
                   </button>
                 </div>
@@ -54,34 +55,18 @@
         </div>
       </div>
     </div>
+    <% } %>
+
 
     <!-- Other users comment -->
     <div class="comments">
-      <% comments.forEach((comm, i) => { %>
-        <%- include('./components/comment.ejs', { comm: comm, link: true, accordion: false }) %>
+      <% if (comm.responses.length > 0) { %>
 
-        <% if (comm.responses.length > 0) { %>
-          <div class="accordion col-md-4 col-10 mb-2">
-            <div class="accordion-item border-dark">
-              <h2 class="accordion-header">
-                <button class="accordion-button collapsed text-bg-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= i %>" aria-controls="collapseOne">
-                  Click to read more:
-                </button>
-              </h2>
-              <div id="collapse<%= i %>" class="accordion-collapse collapse">
-                <!-- Comments responses -->
-                <div class="accordion-body text-bg-dark">
+        <% comm.responses.forEach((response) => { %>
+          <%- include('./components/comment.ejs', { comm: response, link: false, accordion: false }) %>
+        <% }) %>
 
-                  <% comm.responses.forEach((response) => { %>
-                  <%- include('./components/comment.ejs', { comm: response, link: true, accordion: true }) %>
-                  <% }) %>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        <% } %>
-      <% }) %>
+      <% } %>
     </div>
 
   </div>

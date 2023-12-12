@@ -14,14 +14,17 @@ body {
 	margin: 0;
 }
 /* For blogs */
-.blogs {
+.blogs,
+.comments {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-.blog {
+.blog, 
+.comment,
+.comment-input {
 	width: 100%;
 	display: flex;
 	flex-direction: column;

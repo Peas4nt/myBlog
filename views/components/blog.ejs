@@ -1,4 +1,4 @@
-<div id="<%= blog.id %>" class="blog">
+<div class="blog">
 	<!-- Blog Post Start -->
 	<div class="card text-bg-dark col-md-4 col-10 mb-2">
 		<!-- Blog User -->
@@ -21,12 +21,12 @@
 					</button>
 					<ul class="dropdown-menu dropdown-menu-dark">
 						<li>
-							<a class="dropdown-item" href="#"
+							<a class="dropdown-item" href="/profile/<%= blog.userId %>"
 								>Subscribe to <%= blog.username %></a
 							>
 						</li>
 						<li><a class="dropdown-item" href="/blog/<%= blog.id %>">View post</a></li>
-						<li><a class="dropdown-item" href="#">Edit post</a></li>
+						<li><a class="dropdown-item" href="">Edit post</a></li>
 						<li>
 							<a class="dropdown-item text-danger" href="#"
 								>Delete post</a
@@ -38,7 +38,7 @@
 		</div>
 
 		<!-- Blog text -->
-		<div class="card-body" style="cursor: pointer;" onclick="myhref('/blog/<%= blog.id %>');">
+		<div class="card-body" <%= (link)? `onclick=myhref('/blog/${blog.id}'); style=cursor:pointer;` : ""%> >
 			<p class="card-text">
 				<%= blog.text %>
 			</p>
@@ -49,7 +49,7 @@
 
 			<!-- Blog images array -->
 		<% blogImages = JSON.parse(blog.img) %>
-		<% if (blogImages.length) { %>
+		<% if (blogImages.length > 0) { %>
 			<div
 			class="row card-body image-container"
 			data-bs-toggle="modal"
@@ -83,10 +83,81 @@
 					<% } %> 
 				<% } %>
 			</div>
+
+			<!-- Modal window for images -->
+			<div
+				class="modal fade"
+				id="imageCarouselModal-<%= blog.id %>"
+				tabindex="-1"
+				aria-labelledby="carouselModalLabel"
+				aria-hidden="true"
+			>
+				<div class="modal-dialog modal-lg modal-dialog-centered">
+					<div class="modal-content bg-dark">
+						<div class="modal-header">
+							<h5
+								class="modal-title text-bg-dark"
+								id="carouselModalLabel"
+							>
+								Image Gallery
+							</h5>
+							<button
+								type="button"
+								class="btn-close btn-close-white"
+								data-bs-dismiss="modal"
+								aria-label="Close"
+							></button>
+						</div>
+						<div class="modal-body d-flex justify-content-center">
+							<!-- Carousel -->
+							<div id="carouselImages-<%= blog.id %>" class="carousel slide">
+								<div class="carousel-inner text-center">
+									<% blogImages.forEach((img, i) => { %>
+									<div class="carousel-item <%= (i == 0)? "active" : "" %>">
+										<img
+											loading="lazy"
+											src="<%= img %>"
+											class="d-block mx-auto"
+											alt="Image <%= i %>"
+											style="max-width: 100%; height: auto;"
+										/>
+									</div>
+									<% }) %>
+
+								</div>
+								<button
+									class="carousel-control-prev"
+									type="button"
+									data-bs-target="#carouselImages-<%= blog.id %>"
+									data-bs-slide="prev"
+								>
+									<span
+										class="carousel-control-prev-icon"
+										aria-hidden="true"
+									></span>
+									<span class="visually-hidden">Previous</span>
+								</button>
+								<button
+									class="carousel-control-next"
+									type="button"
+									data-bs-target="#carouselImages-<%= blog.id %>"
+									data-bs-slide="next"
+								>
+									<span
+										class="carousel-control-next-icon"
+										aria-hidden="true"
+									></span>
+									<span class="visually-hidden">Next</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		<% } %> 
 
 
-		<!-- Blog Post End -->
+		<!-- Blog Post footer -->
 		<div class="card-footer icons">
 			<!-- Like Icon -->
 			<div class="icon" title="like">
@@ -144,7 +215,7 @@
 						</svg>
 					</div>
 				</div>
-				<span class="likes" id="<%= blog.id %>"><%= blog.likes %></span>
+				<span class="likes" id='[<%= blog.id %>, ""]'><%= blog.likes %></span>
 			</div>
 
 			<!-- Comments Icon -->
@@ -156,77 +227,4 @@
 			</div>
 		</div>
 	</div>
-
-	<% if (blogImages.length) { %>
-		<!-- Modal window for images -->
-		<div
-			class="modal fade"
-			id="imageCarouselModal-<%= blog.id %>"
-			tabindex="-1"
-			aria-labelledby="carouselModalLabel"
-			aria-hidden="true"
-		>
-			<div class="modal-dialog modal-lg modal-dialog-centered">
-				<div class="modal-content bg-dark">
-					<div class="modal-header">
-						<h5
-							class="modal-title text-bg-dark"
-							id="carouselModalLabel"
-						>
-							Image Gallery
-						</h5>
-						<button
-							type="button"
-							class="btn-close btn-close-white"
-							data-bs-dismiss="modal"
-							aria-label="Close"
-						></button>
-					</div>
-					<div class="modal-body d-flex justify-content-center">
-						<!-- Carousel -->
-						<div id="carouselImages-<%= blog.id %>" class="carousel slide">
-							<div class="carousel-inner text-center">
-								<% blogImages.forEach((img, i) => { %>
-								<div class="carousel-item <%= (i == 0)? "active" : "" %>">
-									<img
-										loading="lazy"
-										src="<%= img %>"
-										class="d-block mx-auto"
-										alt="Image <%= i %>"
-										style="max-width: 100%; height: auto;"
-									/>
-								</div>
-								<% }) %>
-
-							</div>
-							<button
-								class="carousel-control-prev"
-								type="button"
-								data-bs-target="#carouselImages-<%= blog.id %>"
-								data-bs-slide="prev"
-							>
-								<span
-									class="carousel-control-prev-icon"
-									aria-hidden="true"
-								></span>
-								<span class="visually-hidden">Previous</span>
-							</button>
-							<button
-								class="carousel-control-next"
-								type="button"
-								data-bs-target="#carouselImages-<%= blog.id %>"
-								data-bs-slide="next"
-							>
-								<span
-									class="carousel-control-next-icon"
-									aria-hidden="true"
-								></span>
-								<span class="visually-hidden">Next</span>
-							</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	<% } %>
 </div>

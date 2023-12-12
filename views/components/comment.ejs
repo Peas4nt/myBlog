@@ -1,88 +1,57 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bootstrap demo</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="/public/styles/global.css">
-
-</head>
-
-<body>
-  <div class="container mt-5">
-
-    <!-- Blog Comments Start -->
-    <div class="card text-bg-dark col-md-6 col-10 mb-2">
-      <!-- Comments body -->
-      <div class="card-body">
-        <!-- Comments User -->
-        <div class="position-relative d-flex">
-          <!-- User name and image -->
-          <div class="d-flex align-items-center" style="width: 50%;">
-            <img src="/public/imgs/photo_2022-03-14_08-41-51.jpg" class="rounded-circle mr-2" alt="User Profile"
-              style="width: 40px; height: 40px;">
-            <h5 class="ms-2">Vladislavs</h5>
-          </div>
-          <!-- Comments settings -->
-          <div class="position-absolute end-0">
-            <div class="dropdown">
-              <button class="btn text-bg-dark" data-bs-toggle="dropdown">
-                <i class="bi bi-three-dots"></i>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-dark">
-                <li><a class="dropdown-item" href="#">View post</a></li>
-                <!-- Post viewers settings -->
-                <li><a class="dropdown-item" href="#">Subscribe to Vladislavs</a></li>
-                <!-- Post owner settings -->
-                <li><a class="dropdown-item" href="#">Edit post</a></li>
-                <li><a class="dropdown-item text-danger" href="#">Delete post</a></li>
-              </ul>
-            </div>
-          </div>
+<div class="comment">
+  <!-- Blog Comments Start -->
+  <div class="card text-bg-dark  <%= (accordion)? "col-12" : "col-md-4 col-10 mb-2" %>">
+    <!-- Comments body -->
+    <div class="card-body">
+      <!-- Comments User -->
+      <div class="position-relative d-flex">
+        <!-- User name and image -->
+        <div class="d-flex align-items-center" style="width: 50%;">
+          <img src="<%= comm.userImage %>" class="rounded-circle mr-2" alt="User Profile" style="width: 40px; height: 40px;" />
+          <h5 class="ms-2"><%= comm.username %></h5>
         </div>
-        <!-- Comments text -->
-        <div class="ms-5">
-          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-            content.
-            This content is a little bit longer.</p>
-          <p class="card-text"><small>Last updated 3 mins ago</small></p>
-          <!-- Comments Image -->
-          <div class="row card-body image-container" data-bs-toggle="modal" data-bs-target="#imageCarouselModal1">
-            <img loading="lazy" src="/public/imgs/Screenshot_1.png" class="col-6" alt="Image 1"
-              style="cursor: pointer;">
-            <img loading="lazy" src="/public/imgs/Screenshot_1.png" class="col-6" alt="Image 2"
-              style="cursor: pointer;">
-            <img loading="lazy" src="/public/imgs/WitcherMap_8k_borders.jpg" class="col-6" alt="Image 2"
-              style="cursor: pointer;">
-            <div class="col-6 position-relative image-container">
-              <div class="overlay"><span class="image-num">+4</span></div>
-              <img class="col-12" src="/public/imgs/WitcherMap_8k_borders.jpg" alt="">
-            </div>
+        <!-- Comments settings -->
+        <div class="position-absolute end-0">
+          <div class="dropdown">
+            <button class="btn text-bg-dark" data-bs-toggle="dropdown">
+              <i class="bi bi-three-dots"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <!-- Post viewers settings -->
+              <li>
+                <a class="dropdown-item" href="/comment/<%= comm.id %>">View comment</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="/profile/<%= comm.userId %>">Subscribe to <%= comm.username %></a>
+              </li>
+              <li>
+                <a class="dropdown-item text-danger" href="#">Delete comment</a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
 
+      <!-- Comments text -->
+      <div class="ms-5" <%= (link)? `onclick=myhref('/comment/${comm.id}'); style=cursor:pointer;` : ""%>>
+        <p class="card-text"><%= comm.text %></p>
+        <p class="card-text">
+          <small><%= comm.created_at %></small>
+        </p>
+      </div>
 
-
-      <!-- Comment End -->
+      <!-- Comment footer -->
       <div class="card-footer icons">
         <!-- Like Icon -->
-        <div>
+        <div class="icon" title="like">
           <div class="con-like">
-            <input class="like" type="checkbox" title="like">
-            <div class="checkmark"><svg xmlns="http://www.w3.org/2000/svg" class="outline" viewBox="0 0 24 24">
-                <path
-                  d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z">
-                </path>
+            <input class="like" type="checkbox" title="like" <%= (comm.likestatus == 1)? "checked" : ""%> />
+            <div class="checkmark">
+              <svg xmlns="http://www.w3.org/2000/svg" class="outline" viewBox="0 0 24 24">
+                <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
               </svg>
               <svg xmlns="http://www.w3.org/2000/svg" class="filled" viewBox="0 0 24 24">
-                <path
-                  d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z">
-                </path>
+                <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"></path>
               </svg>
               <svg xmlns="http://www.w3.org/2000/svg" height="100" width="100" class="celebrate">
                 <polygon class="poly" points="10,10 20,20"></polygon>
@@ -94,63 +63,17 @@
               </svg>
             </div>
           </div>
-          123456      
+          <span class="likes" id='[<%= comm.blog_id %>, <%= comm.id %>]'><%= comm.likes %></span>
         </div>
-        <!-- Views Icon -->
-        <div class="text-info">
-          <i class="bi bi-eye-fill"></i>123123
-        </div>
-        <!-- Comments Icon -->
-        <div>
-          <i class="bi bi-chat-dots-fill"></i>123321
-        </div>
-      </div>
 
-    <!-- Modal window for images -->
-    <div class="modal fade" id="imageCarouselModal1" tabindex="-1" aria-labelledby="carouselModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content bg-dark">
-          <div class="modal-header">
-            <h5 class="modal-title text-bg-dark" id="carouselModalLabel">Image Gallery</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body d-flex justify-content-center">
-            <!-- Carousel -->
-            <div id="carouselImages" class="carousel slide">
-              <div class="carousel-inner text-center">
-                <div class="carousel-item active">
-                  <img loading="lazy" src="/public/imgs/Screenshot_1.png" class="d-block mx-auto" alt="Image 1"
-                    style="max-width: 100%; height: auto;">
-                </div>
-                <div class="carousel-item">
-                  <img loading="lazy" src="/public/imgs/photo_2022-03-14_08-41-51.jpg" class="d-block mx-auto"
-                    alt="Image 2" style="max-width: 100%; height: auto;">
-                </div>
-                <div class="carousel-item">
-                  <img loading="lazy" src="/public/imgs/WitcherMap_8k_borders.jpg" class="d-block mx-auto" alt="Image 2"
-                    style="max-width: 100%; height: auto;">
-                </div>
-                <!-- Add more .carousel-item elements for each additional image -->
-              </div>
-              <button class="carousel-control-prev" type="button" data-bs-target="#carouselImages" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#carouselImages" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-              </button>
-            </div>
-            <!-- End Carousel -->
-          </div>
+        <!-- Comments Icon -->
+        <div class="icon" title="comments"><i class="bi bi-chat-dots-fill" onclick="myhref('/comment/<%= comm.id %>');"></i><%= comm.comments %></div>
+
+        <!-- Views Icon -->
+        <div class="icon text-info" title="views">
+          <i class="bi bi-eye-fill"></i><%= comm.views %>
         </div>
       </div>
     </div>
-
   </div>
-</body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-  integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
-</html>
+</div>

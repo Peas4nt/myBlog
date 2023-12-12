@@ -4,7 +4,18 @@ import path from "path";
 
 import { testConnection } from "./db.js";
 import * as blogController from "./controllers/blogController.js";
+import * as commentController from "./controllers/commentController.js";
+import * as userController from "./controllers/userController.js";
 
+
+// middleware
+import validationCheck from "./middlewares/validation.js";
+import userInf from "./middlewares/userInf.js";
+
+// validation
+import blogCreateValidation from "./validations/blogValidation.js";
+
+// env
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -18,6 +29,7 @@ app.set("view engine", "ejs");
 
 app.use(express.static("public"));
 app.use("/uploads", express.static("uploads"));
+
 
 // multer storage configuration
 const storage = multer.diskStorage({
@@ -35,15 +47,28 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// routes
+app.use(userInf)
 // Main page with all blogs
 app.get("/", blogController.getAll);
 
-// Blog creating
+// Blog creation
 app.get("/blog/create", blogController.getCreate);
-app.post("/blog/create", upload.array("images"), blogController.postCreate);
+app.post("/blog", upload.array("images", 6), blogCreateValidation, validationCheck, blogController.postCreate);
+// Page with one blog and comments
+app.get("/blog/:id", blogController.getOne);
+
+
+// Comment creation
+app.post("/comment", upload.none(), commentController.postCreate)
+// Page with one comment and his child comments
+app.get("/comment/:id", commentController.getOne);
+
 // blog like
 app.post("/blog/like", upload.none(), blogController.postLike)
+
+// Profiles
+app.get("/profile/:id?", userController.getProfile);
+
 
 
 // start server function

@@ -26,7 +26,7 @@ document.getElementById("imageInput").addEventListener("change", function (e) {
 });
 
 // update preview files list
-function updateFileList(fileList) {
+function updateFileList() {
 	previewContainer.innerHTML = "";
 
 	currentFiles.forEach((file, index) => showFile(file, index));
@@ -76,7 +76,13 @@ document.querySelector(".submit-btn").addEventListener("click", function (e) {
 	const text = blogTexts.value;
 	const images = currentFiles;
 
-	query(status, text, images);
+	if (blogText.value.length < 1) {
+		warningAlert(400, {
+			msg: "Enter the text (min chars: 1, max chars: 255)",
+		});
+	} else if (images.length > 6) {
+		warningAlert(400, { msg: "Too many images(max: 6)" });
+	} else query(status, text, images);
 });
 
 function query(status, text, images) {
@@ -90,6 +96,43 @@ function query(status, text, images) {
 	// add images
 	images.forEach((image) => formData.append("images", image));
 
-	xhttp.open("POST", "/blog/create");
+	xhttp.onload = function () {
+		const result = JSON.parse(this.responseText);
+		console.log(result);
+		warningAlert(this.status, result);
+	};
+
+	xhttp.open("POST", "/blog");
 	xhttp.send(formData);
+}
+
+function formClear() {
+	currentFiles = [];
+	updateFileList();
+	blogTexts.value = "";
+}
+
+// alerts
+const alerts = document.querySelector(".alerts");
+function warningAlert(status, result) {
+	let alert = "";
+	if (status == 200) {
+		alert = `
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+		<strong>${result.msg}</strong> You will be taken to the created <a href="/blog/${result.blogId}" class="alert-link">blog page</a>.
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>`;
+		formClear();
+	} else {
+		let errors = Array.isArray(result) ? result : [result];
+		errors.forEach(
+			(err) =>
+				(alert += `
+		<div class="alert alert-warning alert-dismissible fade show" role="alert">
+		<strong>Warning</strong> ${err.msg}
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>`),
+		);
+	}
+	alerts.innerHTML = alert;
 }

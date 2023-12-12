@@ -19,7 +19,7 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 				<li class="nav-item">
-					<a class="nav-link <%= (page == "home")? "active" : "" %>" aria-current="page" href="/"
+					<a class="nav-link <%= (page == "Home")? "active" : "" %>" aria-current="page" href="/"
 						>Home</a
 					>
 				</li>
@@ -27,7 +27,7 @@
 					<a class="nav-link <%= (page == "myProfile")? "active" : "" %>" href="/profile">My Profile</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link <%= (page == "blogCreate")? "active" : "" %>" href="/blog/create">Create Post</a>
+					<a class="nav-link <%= (page == "Blog Create")? "active" : "" %>" href="/blog/create">Create Post</a>
 				</li>
 			</ul>
 			<form class="d-flex" role="search">
@@ -50,12 +50,12 @@
 					aria-expanded="false"
 				>
 					<img
-						src="/imgs/photo_2022-03-14_08-41-51.jpg"
+						src="<%= user.img %>"
 						class="rounded-circle mr-2"
 						alt="User Profile"
 						style="width: 40px; height: 40px;"
 					/>
-					<h5>Vladislavs</h5>
+					<h5><%= user.username %></h5>
 				</a>
 
 				<ul class="dropdown-menu dropdown-menu-dark">
