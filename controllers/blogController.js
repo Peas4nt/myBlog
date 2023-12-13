@@ -18,7 +18,7 @@ export const getAll = async (req, res) => {
 		LEFT JOIN vt_user_profile AS c
 		ON c.id = b.inf_id
 		WHERE a.${`status`} = 1 OR c.id = 1
-		ORDER BY created_at DESC`;
+		ORDER BY a.created_at DESC`;
 
 		const connection = await getConnection();
 		const [blogs] = await connection.query(blogsSql, req.user.id, req.user.id);
@@ -48,7 +48,7 @@ export const getOne = async (req, res) => {
 	try {
 		const userId = req.user.id;
 		const blogId = req.params.id;
-		const blogData = [req.user.id, blogId, req.user.id];
+		const blogData = [userId, blogId, userId];
 		const blogsSql = `
 		SELECT a.id, c.id AS userId, c.username, c.img AS userImage ,a.text, a.img, a.views, a.created_at as createdAt, 
 		(SELECT EXISTS(SELECT * FROM vt_likes WHERE user_id = ? AND blog_id = a.id AND comment_id is NULL)) AS likestatus,

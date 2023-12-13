@@ -1,0 +1,27 @@
+.settings {
+  display: flex;
+}
+
+.navbar-settings {
+  padding: 10px;
+  position: relative;
+}
+
+.nav-links {
+  position: fixed;
+  top:50%
+
+}
+.forms {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.forms div {
+  padding: 5px;
+}
+
+.preview img {
+  margin-left: 15px;
+}

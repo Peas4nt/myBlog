@@ -30,17 +30,6 @@
 					<a class="nav-link <%= (page == "Blog Create")? "active" : "" %>" href="/blog/create">Create Post</a>
 				</li>
 			</ul>
-			<form class="d-flex" role="search">
-				<input
-					class="form-control me-2"
-					type="search"
-					placeholder="Search"
-					aria-label="Search"
-				/>
-				<button class="btn btn-outline-success" type="submit">
-					Search
-				</button>
-			</form>
 
 			<div class="dropdown">
 				<a
@@ -60,7 +49,7 @@
 
 				<ul class="dropdown-menu dropdown-menu-dark">
 					<li><a class="dropdown-item <%= (page == "profile")? "active" : "" %>" href="/profile">Profile</a></li>
-					<li><a class="dropdown-item <%= (page == "settings")? "active" : "" %>" href="/setings">Settings</a></li>
+					<li><a class="dropdown-item <%= (page == "settings")? "active" : "" %>" href="/settings">Settings</a></li>
 					<li>
 						<a class="dropdown-item text-danger" href="/logout">Logout</a>
 					</li>
