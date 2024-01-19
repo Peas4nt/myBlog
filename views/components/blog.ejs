@@ -1,232 +1,136 @@
 <div class="blog">
-	<!-- Blog Post Start -->
-	<div class="card text-bg-dark col-md-4 col-10 mb-2">
-		<!-- Blog User -->
-		<div class="card-header position-relative d-flex">
-			<!-- User name and image -->
-			<div class="d-flex align-items-center" onclick="myhref('/profile/<%= blog.userId %>');" style="cursor:pointer; width: 50%;">
-				<img
-					src="<%= blog.userImage %>"
-					class="rounded-circle mr-2"
-					alt="User Profile"
-					style="width: 40px; height: 40px;"
-				/>
-				<h5 class="ms-2"><%= blog.username %></h5>
-			</div>
-			<!-- blog settings -->
-			<div class="position-absolute end-0">
-				<div class="dropdown">
-					<button class="btn text-bg-dark" data-bs-toggle="dropdown">
-						<i class="bi bi-three-dots"></i>
-					</button>
-					<ul class="dropdown-menu dropdown-menu-dark">
-						<li>
-							<a class="dropdown-item" href="/profile/<%= blog.userId %>"
-								>Subscribe to <%= blog.username %></a
-							>
-						</li>
-						<li><a class="dropdown-item" href="/blog/<%= blog.id %>">View post</a></li>
-						<% if (user.id === blog.userId) { %>
-							<li><a class="dropdown-item" href="">Edit post</a></li>
-							<li>
-								<a class="dropdown-item text-danger" href="#"
-									>Delete post</a
-								>
-							</li>
-						<% } %>
-					</ul>
-				</div>
-			</div>
-		</div>
+  <!-- Blog Post Start -->
+  <div class="card text-bg-dark col-md-4 col-10 mb-2">
+    <!-- Blog User -->
+    <div class="card-header position-relative d-flex">
+      <!-- User name and image -->
+      <div class="d-flex align-items-center" onclick="myhref('/profile/<%= blog.userId %>');" style="cursor:pointer; width: 50%;">
+        <img src="<%= blog.userImage %>" class="rounded-circle mr-2" alt="User Profile" style="width: 40px; height: 40px;" />
+        <h5 class="ms-2"><%= blog.username %></h5>
+      </div>
+      <!-- blog settings -->
+      <div class="position-absolute end-0">
+        <div class="dropdown">
+          <button class="btn text-bg-dark" data-bs-toggle="dropdown">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-dark">
+            <li>
+              <a class="dropdown-item" href="/profile/<%= blog.userId %>">Subscribe to <%= blog.username %></a>
+            </li>
+            <li><a class="dropdown-item" href="/blog/<%= blog.id %>">View post</a></li>
+            <% if (user.id === blog.userId) { %>
+            <li><a class="dropdown-item" href="">Edit post</a></li>
+            <li>
+              <button class="dropdown-item text-danger blog-delete-btn" id="<%= blog.id %>">Delete post</button>
+            </li>
+            <% } %>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-		<!-- Blog text -->
-		<div class="card-body" <%= (link)? `onclick=myhref('/blog/${blog.id}'); style=cursor:pointer;` : ""%> >
-			<p class="card-text">
-				<%= blog.text %>
-			</p>
-			<p class="card-text"><small><%= blog.createdAt %></small></p>
-		</div>
+    <!-- Blog text -->
+    <div class="card-body" <%= (link)? `onclick=myhref('/blog/${blog.id}'); style=cursor:pointer;` : ""%>>
+      <p class="card-text">
+        <%= blog.text %>
+      </p>
+      <p class="card-text"><small><%= blog.createdAt %></small></p>
+    </div>
 
-		<!-- Post Image -->
+    <!-- Post Image -->
 
-			<!-- Blog images array -->
-		<% blogImages = JSON.parse(blog.img) %>
-		<% if (blogImages.length > 0) { %>
-			<div
-			class="row card-body image-container"
-			data-bs-toggle="modal"
-			data-bs-target="#imageCarouselModal-<%= blog.id %>"
-			>
-				<!-- loop iteration if images >4 or <4 -->
-				<% const iterations = (blogImages.length > 4)? 4 : blogImages.length %> 
-				<% for (let i = 0; i < iterations; i++) {%> 
-					<!--  -->
-					<% if (blogImages.length > 4 && i == 3) { %>
-						<div class="col-6 position-relative">
-							<div class="overlay image-crop-container">
-								<span class="image-num">+<%= blogImages.length - 4 %></span>
-							</div>
-							<img
-								class="col-12"
-								loading="lazy"
-								src="<%= blogImages[i] %>"
-								alt="Image <%= i %>"
-								style="cursor: pointer;"
-							/>
-						</div>
-					<% } else { %>
-						<img
-							loading="lazy"
-							src="<%= blogImages[i] %>"
-							class="col-6"
-							alt="Image <%= i %>"
-							style="cursor: pointer;"
-						/>
-					<% } %> 
-				<% } %>
-			</div>
+    <!-- Blog images array -->
+    <% blogImages = JSON.parse(blog.img) %>
+    <% if (blogImages.length > 0) { %>
+    <div class="row card-body image-container" data-bs-toggle="modal" data-bs-target="#imageCarouselModal-<%= blog.id %>">
+      <!-- loop iteration if images >4 or <4 -->
+      <% const iterations = (blogImages.length > 4)? 4 : blogImages.length %>
+      <% for (let i = 0; i < iterations; i++) {%>
+      <!--  -->
+      <% if (blogImages.length > 4 && i == 3) { %>
+      <div class="col-6 position-relative">
+        <div class="overlay image-crop-container">
+          <span class="image-num">+<%= blogImages.length - 4 %></span>
+        </div>
+        <img class="col-12" loading="lazy" src="<%= blogImages[i] %>" alt="Image <%= i %>" style="cursor: pointer;" />
+      </div>
+      <% } else { %>
+      <img loading="lazy" src="<%= blogImages[i] %>" class="col-6" alt="Image <%= i %>" style="cursor: pointer;" />
+      <% } %>
+      <% } %>
+    </div>
 
-			<!-- Modal window for images -->
-			<div
-				class="modal fade"
-				id="imageCarouselModal-<%= blog.id %>"
-				tabindex="-1"
-				aria-labelledby="carouselModalLabel"
-				aria-hidden="true"
-			>
-				<div class="modal-dialog modal-lg modal-dialog-centered">
-					<div class="modal-content bg-dark">
-						<div class="modal-header">
-							<h5
-								class="modal-title text-bg-dark"
-								id="carouselModalLabel"
-							>
-								Image Gallery
-							</h5>
-							<button
-								type="button"
-								class="btn-close btn-close-white"
-								data-bs-dismiss="modal"
-								aria-label="Close"
-							></button>
-						</div>
-						<div class="modal-body d-flex justify-content-center">
-							<!-- Carousel -->
-							<div id="carouselImages-<%= blog.id %>" class="carousel slide">
-								<div class="carousel-inner text-center">
-									<% blogImages.forEach((img, i) => { %>
-									<div class="carousel-item <%= (i == 0)? "active" : "" %>">
-										<img
-											loading="lazy"
-											src="<%= img %>"
-											class="d-block mx-auto"
-											alt="Image <%= i %>"
-											style="max-width: 100%; height: auto;"
-										/>
-									</div>
-									<% }) %>
+    <!-- Modal window for images -->
+    <div class="modal fade" id="imageCarouselModal-<%= blog.id %>" tabindex="-1" aria-labelledby="carouselModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-dark">
+          <div class="modal-header">
+            <h5 class="modal-title text-bg-dark" id="carouselModalLabel">
+              Image Gallery
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body d-flex justify-content-center">
+            <!-- Carousel -->
+            <div id="carouselImages-<%= blog.id %>" class="carousel slide">
+              <div class="carousel-inner text-center">
+                <% blogImages.forEach((img, i) => { %>
+                <div class="carousel-item <%= (i == 0)? "active" : "" %>">
+                  <img loading="lazy" src="<%= img %>" class="d-block mx-auto" alt="Image <%= i %>" style="max-width: 100%; height: auto;" />
+                </div>
+                <% }) %>
 
-								</div>
-								<button
-									class="carousel-control-prev"
-									type="button"
-									data-bs-target="#carouselImages-<%= blog.id %>"
-									data-bs-slide="prev"
-								>
-									<span
-										class="carousel-control-prev-icon"
-										aria-hidden="true"
-									></span>
-									<span class="visually-hidden">Previous</span>
-								</button>
-								<button
-									class="carousel-control-next"
-									type="button"
-									data-bs-target="#carouselImages-<%= blog.id %>"
-									data-bs-slide="next"
-								>
-									<span
-										class="carousel-control-next-icon"
-										aria-hidden="true"
-									></span>
-									<span class="visually-hidden">Next</span>
-								</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		<% } %> 
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselImages-<%= blog.id %>" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselImages-<%= blog.id %>" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% } %>
 
 
-		<!-- Blog Post footer -->
-		<div class="card-footer icons">
-			<!-- Like Icon -->
-			<div class="icon" title="like">
-				<div class="con-like">
-					<input class="like" type="checkbox" title="like" <%= (blog.likestatus == 1)? "checked" : ""%> />
-					<div class="checkmark">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="outline"
-							viewBox="0 0 24 24"
-						>
-							<path
-								d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"
-							></path>
-						</svg>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							class="filled"
-							viewBox="0 0 24 24"
-						>
-							<path
-								d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"
-							></path>
-						</svg>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							height="100"
-							width="100"
-							class="celebrate"
-						>
-							<polygon
-								class="poly"
-								points="10,10 20,20"
-							></polygon>
-							<polygon
-								class="poly"
-								points="10,50 20,50"
-							></polygon>
-							<polygon
-								class="poly"
-								points="20,80 30,70"
-							></polygon>
-							<polygon
-								class="poly"
-								points="90,10 80,20"
-							></polygon>
-							<polygon
-								class="poly"
-								points="90,50 80,50"
-							></polygon>
-							<polygon
-								class="poly"
-								points="80,80 70,70"
-							></polygon>
-						</svg>
-					</div>
-				</div>
-				<span class="likes" id='[<%= blog.id %>, ""]'><%= blog.likes %></span>
-			</div>
+    <!-- Blog Post footer -->
+    <div class="card-footer icons">
+      <!-- Like Icon -->
+      <div class="icon" title="like">
+        <div class="con-like">
+          <input class="like" type="checkbox" title="like" <%= (blog.likestatus == 1)? "checked" : ""%> />
+          <div class="checkmark">
+            <svg xmlns="http://www.w3.org/2000/svg" class="outline" viewBox="0 0 24 24">
+              <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585,18.4a2.973,2.973,0,0,1-3.83,0C4.947,16.006,2,11.87,2,8.967a4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,11,8.967a1,1,0,0,0,2,0,4.8,4.8,0,0,1,4.5-5.05A4.8,4.8,0,0,1,22,8.967C22,11.87,19.053,16.006,13.915,20.313Z"></path>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="filled" viewBox="0 0 24 24">
+              <path d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Z"></path>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="100" width="100" class="celebrate">
+              <polygon class="poly" points="10,10 20,20"></polygon>
+              <polygon class="poly" points="10,50 20,50"></polygon>
+              <polygon class="poly" points="20,80 30,70"></polygon>
+              <polygon class="poly" points="90,10 80,20"></polygon>
+              <polygon class="poly" points="90,50 80,50"></polygon>
+              <polygon class="poly" points="80,80 70,70"></polygon>
+            </svg>
+          </div>
+        </div>
+        <span class="likes" id='[<%= blog.id %>, ""]'><%= blog.likes %></span>
+      </div>
 
-			<!-- Comments Icon -->
-			<div class="icon" title="comments"><i class="bi bi-chat-dots-fill" onclick="myhref('/blog/<%= blog.id %>');"></i><%= blog.comments %></div>
+      <!-- Comments Icon -->
+      <div class="icon" title="comments"><i class="bi bi-chat-dots-fill" onclick="myhref('/blog/<%= blog.id %>');"></i><%= blog.comments %></div>
 
-			<!-- Views Icon -->
-			<div class="icon text-info" title="views">
-				<i class="bi bi-eye-fill"></i><%= blog.views %>
-			</div>
-		</div>
-	</div>
+      <!-- Views Icon -->
+      <div class="icon text-info" title="views">
+        <i class="bi bi-eye-fill"></i><%= blog.views %>
+      </div>
+    </div>
+  </div>
 </div>

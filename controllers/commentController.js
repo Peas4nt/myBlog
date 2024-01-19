@@ -131,4 +131,38 @@ export const postCreate = async (req, res) => {
 
 export const update = (req, res) => {};
 
-export const remove = (req, res) => {};
+export const remove = async (req, res) => {
+	try {
+		const userId = req.user.id;
+		const commId = req.body.commId
+
+		const ownerCheckData = [commId, userId];
+		const ownerChecksSql = `
+		SELECT EXISTS(SELECT * FROM vt_comments WHERE id = ? AND user_id = ?) AS owner`;
+
+		const commDeleteData = [commId];
+		const commDeletSql = `
+		DELETE FROM vt_comments WHERE id = ?`;
+
+		const connection = await getConnection();
+		const [owner] = await connection.query(ownerChecksSql, ownerCheckData);
+
+		// owner check
+		if (owner[0].owner == 0) {
+			return res.status(404).json({
+				msg: "You are not a blog owner."
+			})
+		}
+
+		await connection.query(commDeletSql, commDeleteData);
+		connection.release();
+
+		res.status(200).json({
+			msg: "Comment deleted successfully"
+		})
+	} catch (error) {
+		res.status(500).json({
+			msg: "Server error, cant remove comment",
+		});
+	}
+};

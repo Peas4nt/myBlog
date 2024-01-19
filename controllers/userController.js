@@ -70,6 +70,99 @@ export const getProfile = async (req, res) => {
 	}
 };
 
+export const getSignin = async (req, res) => {
+	res.render("signin", {
+		page: "SignIn",
+	});
+};
+
+export const postSignin = async (req, res) => {
+	try {
+		const { email, password } = req.body;
+
+		const profileData = [email, password];
+		const profilesSql = `
+		SELECT id FROM vt_user_inf WHERE email = ? AND password = ?`;
+
+		const connection = await getConnection();
+		const [profile] = await connection.query(profilesSql, profileData);
+		connection.release();
+
+		if (!profile[0]) {
+			return res.status(404).json({
+				msg: "Wrong email or password",
+			});
+		}
+
+		req.session.user = profile[0];
+
+		res.status(200).json({
+			msg: "You successfully signed",
+		});
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({
+			msg: "Server error, server cont signin you",
+		});
+	}
+};
+
+export const postSignup = async (req, res) => {
+	try {
+		const { username, email, password, password2 } = req.body;
+		const createdAt = new Date();
+
+		const checkData = [email];
+		const checkSql = `
+		SELECT EXISTS(SELECT * FROM vt_user_inf WHERE email = ?) AS check_data`;
+
+		const profileData = [username, createdAt];
+		const profileSql = `
+		INSERT INTO vt_user_profile (username, created_at) VALUES (?, ?)`;
+
+		const privateData = [email, password];
+		const privatesSql = `
+		INSERT INTO vt_user_inf (email, password) VALUES (?, ?)`;
+
+		const userSql = `
+		INSERT INTO vt_users (profile_id, inf_id) VALUES (?, ?)`;
+
+		if (password != password2) {
+			return res.status(400).json({
+				msg: " Passwords don't match ",
+			});
+		}
+
+		const connection = await getConnection();
+		const [check] = await connection.query(checkSql, checkData);
+
+		if (check[0].check_data == 1) {
+			return res.status(400).json({
+				msg: "That email address is already in use.",
+			});
+		}
+
+		const [profile] = await connection.query(profileSql, profileData);
+		const [inform] = await connection.query(privatesSql, privateData);
+
+		const userData = [profile.insertId, inform.insertId];
+		const [user] = await connection.query(userSql, userData);
+
+		connection.release();
+
+
+		req.session.user = { id: user.insertId };
+		res.status(200).json({
+			msg: "User created successfully",
+		});
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({
+			msg: "Server error, server cont signin you",
+		});
+	}
+};
+
 export const postSubcribe = async (req, res) => {
 	try {
 		// db variables
@@ -106,9 +199,9 @@ export const getSettings = async (req, res) => {
 		const profilesSql = `
 		SELECT prof.username, prof.img, prof.description, inf.name, inf.surname, inf.email
 		FROM vt_user_profile AS prof
-		LEFT JOIN vt_users AS user ON USER.profile_id = prof.id
-		LEFT JOIN vt_user_inf AS inf ON USER.inf_id = inf.id
-		WHERE USER.id = ?`;
+		LEFT JOIN vt_users AS user ON user.profile_id = prof.id
+		LEFT JOIN vt_user_inf AS inf ON user.inf_id = inf.id
+		WHERE user.id = ?`;
 
 		const connection = await getConnection();
 		const [profiles] = await connection.query(profilesSql, profileData);
@@ -224,17 +317,30 @@ export const putPrivate = async (req, res) => {
 		${newPassword ? `,password = ?` : ""}
 		WHERE id = ?`;
 
+		const checkData = [email];
+		const checkSql = `
+		SELECT EXISTS(SELECT * FROM vt_user_inf WHERE email = ?) AS check_data`;
+
 		const passCheckData = [currentPassword, userId];
 		const passChecksSql = `
 		SELECT EXISTS(SELECT * FROM vt_user_inf WHERE PASSWORD = ? AND id = ?) AS pass`;
 
 		const connection = await getConnection();
+
+		const [check] = await connection.query(checkSql, checkData);
+
+		if (check[0].check_data == 1) {
+			return res.status(400).json({
+				msg: "That email address is already in use.",
+			});
+		}
+
 		const [passcheck] = await connection.query(
 			passChecksSql,
 			passCheckData,
 		);
 
-		if (passcheck.pass == 0) {
+		if (passcheck[0].pass == 0) {
 			return res.status(400).json({
 				msg: "Uncorrect password",
 			});

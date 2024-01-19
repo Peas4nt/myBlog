@@ -1,7 +1,7 @@
 import { getConnection } from "../db.js";
 import timeDiff from "../utils/timeDiff.js";
 import imageCheck from "../utils/getUserImg.js";
-import { response } from "express";
+import deleteFile from "../utils/deleteFile.js";
 
 // main page with all blogs
 export const getAll = async (req, res) => {
@@ -241,4 +241,48 @@ export const postLike = async (req, res) => {
 
 export const update = (req, res) => {};
 
-export const remove = (req, res) => {};
+export const remove = async (req, res) => {
+	try {
+		const userId = req.user.id;
+		const blogId = req.body.blogId
+
+		const ownerCheckData = [blogId, userId];
+		const ownerChecksSql = `
+		SELECT EXISTS(SELECT * FROM vt_blogs WHERE id = ? AND user_id = ?) AS owner`;
+
+		const blogDeleteData = [blogId];
+		const blogDeletSql = `
+		DELETE FROM vt_blogs WHERE id = ?`;
+
+		const blogImgData = [blogId];
+		const blogImgSql = `
+		SELECT img FROM vt_blogs WHERE id = ?`;
+
+		const connection = await getConnection();
+		const [owner] = await connection.query(ownerChecksSql, ownerCheckData);
+
+		// owner check
+		if (owner[0].owner == 0) {
+			return res.status(404).json({
+				msg: "You are not a blog owner."
+			})
+		}
+
+		const [blog] = await connection.query(blogImgSql, blogImgData);
+		await connection.query(blogDeletSql, blogDeleteData);
+		connection.release();
+
+		const imgs = JSON.parse(blog[0].img)
+		imgs.forEach(path => {
+			deleteFile(path)
+		});
+
+		res.status(200).json({
+			msg: "Blog deleted successfully"
+		})
+	} catch (error) {
+		res.status(500).json({
+			msg: "Server error, cant remove blog",
+		});
+	}
+};

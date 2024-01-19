@@ -3,7 +3,8 @@ import imageCheck from "../utils/getUserImg.js"
 
 export default async (req, res, next) => {
 	try {
-		const id = 1;
+		const id = req.session.user.id;
+
 		const userData = [id];
 		const userSql = `
     SELECT b.id, a.username, a.img
@@ -19,7 +20,7 @@ export default async (req, res, next) => {
 		req.user.img = imageCheck(req.user.img);
 	} catch (error) {
 		console.log(error);
-		res.status(500).json({
+		return res.status(500).json({
 			msg: "Server error.",
 		});
 	}
