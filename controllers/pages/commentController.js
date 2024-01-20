@@ -1,6 +1,6 @@
-import { getConnection } from "../db.js";
-import timeDiff from "../utils/timeDiff.js";
-import imageCheck from "../utils/getUserImg.js";
+import { getConnection } from "../../db.js";
+import timeDiff from "../../utils/timeDiff.js";
+import imageCheck from "../../utils/getUserImg.js";
 
 export const getOne = async (req, res) => {
 	try {
@@ -62,7 +62,7 @@ export const getOne = async (req, res) => {
 
 		const connection = await getConnection();
 		// view++
-		await connection.query(commentViewSql, commentViewData );
+		await connection.query(commentViewSql, commentViewData);
 		// get blog comments
 		const [comments] = await connection.query(cmmentsSql, commentsData);
 		connection.release();
@@ -86,7 +86,7 @@ export const getOne = async (req, res) => {
 			res.render("oneComment", {
 				page: `comment ${commentId}`,
 				user: req.user,
-				comm
+				comm,
 			});
 		} else {
 			res.status(404).json({ msg: "Comment not found" });
@@ -134,7 +134,7 @@ export const update = (req, res) => {};
 export const remove = async (req, res) => {
 	try {
 		const userId = req.user.id;
-		const commId = req.body.commId
+		const commId = req.body.commId;
 
 		const ownerCheckData = [commId, userId];
 		const ownerChecksSql = `
@@ -150,16 +150,17 @@ export const remove = async (req, res) => {
 		// owner check
 		if (owner[0].owner == 0) {
 			return res.status(404).json({
-				msg: "You are not a blog owner."
-			})
+				msg: "You are not a comment owner.",
+			});
 		}
 
 		await connection.query(commDeletSql, commDeleteData);
 		connection.release();
 
 		res.status(200).json({
-			msg: "Comment deleted successfully"
-		})
+			msg: "Comment deleted successfully",
+		});
+		console.log(`User: ${userId} delete comment ${commId}`);
 	} catch (error) {
 		res.status(500).json({
 			msg: "Server error, cant remove comment",

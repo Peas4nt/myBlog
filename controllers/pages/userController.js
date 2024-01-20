@@ -1,7 +1,7 @@
-import { getConnection } from "../db.js";
-import timeDiff from "../utils/timeDiff.js";
-import imageCheck from "../utils/getUserImg.js";
-import deleteFile from "../utils/deleteFile.js";
+import { getConnection } from "../../db.js";
+import timeDiff from "../../utils/timeDiff.js";
+import imageCheck from "../../utils/getUserImg.js";
+import deleteFile from "../../utils/deleteFile.js";
 
 export const getProfile = async (req, res) => {
 	try {
@@ -175,7 +175,7 @@ export const postSubcribe = async (req, res) => {
 		const sqlUnsubscribe = `DELETE FROM vt_subcribers WHERE user_id = ? AND subscriber_id = ?`;
 
 		const connection = await getConnection();
-		if (status == "true") {
+		if (Boolean(status)) {
 			await connection.query(sqlSubscribe, data);
 			res.status(200).json({ msg: "Now you follow that user" });
 		} else {
@@ -271,7 +271,6 @@ export const putProfile = async (req, res) => {
 		const username = req.body.username;
 		const description = req.body.description;
 
-		console.log(username, description);
 		const profileData = [username, description, userId];
 		const profilesSql = `
 		UPDATE vt_user_profile
@@ -317,9 +316,9 @@ export const putPrivate = async (req, res) => {
 		${newPassword ? `,password = ?` : ""}
 		WHERE id = ?`;
 
-		const checkData = [email];
+		const checkData = [email, userId];
 		const checkSql = `
-		SELECT EXISTS(SELECT * FROM vt_user_inf WHERE email = ?) AS check_data`;
+		SELECT EXISTS(SELECT * FROM vt_user_inf WHERE email = ? AND id != ?) AS check_data`;
 
 		const passCheckData = [currentPassword, userId];
 		const passChecksSql = `
@@ -349,7 +348,7 @@ export const putPrivate = async (req, res) => {
 		if (newPassword) {
 			if (newPassword != confirmPassword)
 				return res.status(400).json({
-					msg: " Passwords don't match ",
+					msg: "Passwords don't match",
 				});
 		} else privateData.splice(3, 1);
 

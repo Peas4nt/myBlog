@@ -1,6 +1,7 @@
 import { getConnection } from "../db.js";
 import imageCheck from "../utils/getUserImg.js"
 
+// Middleware for getting user id and image
 export default async (req, res, next) => {
 	try {
 		const id = req.session.user.id;

@@ -4,10 +4,10 @@ dotenv.config();
 
 // Create poll connection
 const pool = mysql.createPool({
-	host: process.env.HOST,
-	user: process.env.USER,
-	database: process.env.DBNAME,
-	password: process.env.PASSWORD,
+	host: process.env.HOST ?? "localhost",
+	user: process.env.USER ?? "root",
+	database: process.env.DBNAME ?? "myblog",
+	password: process.env.PASSWORD ?? "",
 	waitForConnections: true,
 	connectionLimit: 5,
 	queueLimit: 0

@@ -15,15 +15,17 @@
             <i class="bi bi-three-dots"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-dark">
-            <li>
-              <a class="dropdown-item" href="/profile/<%= blog.userId %>">Subscribe to <%= blog.username %></a>
-            </li>
+
             <li><a class="dropdown-item" href="/blog/<%= blog.id %>">View post</a></li>
             <% if (user.id === blog.userId) { %>
             <li><a class="dropdown-item" href="">Edit post</a></li>
             <li>
               <button class="dropdown-item text-danger blog-delete-btn" id="<%= blog.id %>">Delete post</button>
             </li>
+            <% } else { %>
+              <li>
+                <a class="dropdown-item" href="/profile/<%= blog.userId %>">Subscribe to <%= blog.username %></a>
+              </li>
             <% } %>
           </ul>
         </div>

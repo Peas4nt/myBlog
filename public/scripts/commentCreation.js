@@ -23,7 +23,7 @@ document.querySelector(".submit-btn").addEventListener("click", function (e) {
 	const arr = JSON.parse(this.id);
 	const blogId = arr[0];
 	const commentId = arr[1];
-	console.log(arr);
+	console.log(typeof commentId);
 
 	if (blogText.value.length < 1) {
 		warningAlert(400, {

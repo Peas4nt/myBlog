@@ -21,14 +21,16 @@
               <li>
                 <a class="dropdown-item" href="/comment/<%= comm.id %>">View comment</a>
               </li>
-              <li>
-                <a class="dropdown-item" href="/profile/<%= comm.userId %>">Subscribe to <%= comm.username %></a>
-              </li>
               <% if (user.id === comm.userId) { %>
+
               <li>
                 <button class="dropdown-item text-danger comm-delete-btn" id="<%= comm.id %>">Delete comment</button>
               </li>
-              <% } %>
+              <% } else {%>
+              <li>
+                <a class="dropdown-item" href="/profile/<%= comm.userId %>">Subscribe to <%= comm.username %></a>
+              </li>
+              <% }%>
             </ul>
           </div>
         </div>

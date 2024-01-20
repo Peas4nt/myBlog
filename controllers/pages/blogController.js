@@ -1,14 +1,16 @@
-import { getConnection } from "../db.js";
-import timeDiff from "../utils/timeDiff.js";
-import imageCheck from "../utils/getUserImg.js";
-import deleteFile from "../utils/deleteFile.js";
+import { getConnection } from "../../db.js";
+import timeDiff from "../../utils/timeDiff.js";
+import imageCheck from "../../utils/getUserImg.js";
+import deleteFile from "../../utils/deleteFile.js";
 
 // main page with all blogs
 export const getAll = async (req, res) => {
 	try {
+		const userId = req.user.id
+		const blogData = [userId, userId, userId];
 		const blogsSql = `
 		SELECT a.id, c.id AS userId, c.username, c.img AS userImage ,a.text, a.img, a.views, a.created_at as createdAt, 
-		(SELECT EXISTS(SELECT * FROM vt_likes WHERE user_id = 1 AND blog_id = a.id AND comment_id is NULL)) AS likestatus,
+		(SELECT EXISTS(SELECT * FROM vt_likes WHERE user_id = ? AND blog_id = a.id AND comment_id is NULL)) AS likestatus,
 		(SELECT COUNT(*) FROM vt_likes WHERE blog_id = a.id AND comment_id IS NULL) AS likes,
 		(SELECT COUNT(*) FROM vt_comments WHERE blog_id = a.id) AS comments
 		
@@ -17,11 +19,11 @@ export const getAll = async (req, res) => {
 		ON b.id = a.user_id
 		LEFT JOIN vt_user_profile AS c
 		ON c.id = b.inf_id
-		WHERE a.${`status`} = 1 OR c.id = 1
+		WHERE a.${`status`} = 1 OR c.id = ?
 		ORDER BY a.created_at DESC`;
 
 		const connection = await getConnection();
-		const [blogs] = await connection.query(blogsSql, req.user.id, req.user.id);
+		const [blogs] = await connection.query(blogsSql, blogData);
 		connection.release();
 
 		blogs.map((blog) => {
@@ -207,13 +209,14 @@ export const postCreate = async (req, res) => {
 	}
 };
 
-// like save in db
+// like saving in db
 export const postLike = async (req, res) => {
 	try {
 		// db variables
 		const id = req.user.id;
 		const blogId = parseInt(req.body.blogId);
 		const commentId = req.body.commentId ? req.body.commentId : null;
+
 		const status = req.body.status;
 
 		const data = [id, blogId, commentId];
