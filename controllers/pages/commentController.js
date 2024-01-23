@@ -73,7 +73,6 @@ export const getOne = async (req, res) => {
 			comm.userImage = imageCheck(comm.userImage);
 
 			comm.responses = JSON.parse(comm.responses);
-			// console.log(comm.responses);
 			if (comm.responses[0].userId != null) {
 				comm.responses.map((childComm) => {
 					childComm.created_at = timeDiff(childComm.created_at);

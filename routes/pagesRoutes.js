@@ -17,6 +17,7 @@ import {
 	privateValidation,
 	followValidation,
 	likeValidation,
+	blogDeleteValidation,
 } from "../validations/index.js";
 
 import {
@@ -52,7 +53,9 @@ router.post(
 );
 router.get("/logout", logout);
 
+// check user session
 router.use(sessionCheck);
+// get information about user
 router.use(userInf);
 
 // Main page with all blogs
@@ -67,7 +70,13 @@ router.post(
 	validationCheck,
 	blogController.postCreate,
 );
-router.delete("/blog", blogUpload.none(), blogController.remove);
+router.delete(
+	"/blog",
+	blogUpload.none(),
+	blogDeleteValidation,
+	validationCheck,
+	blogController.remove,
+);
 router.get("/blog/:id", blogController.getOne);
 
 // Comment creation

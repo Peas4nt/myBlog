@@ -3,6 +3,8 @@ import session from "express-session";
 import { testConnection } from "./db.js";
 import dotenv from "dotenv";
 import pagesRoutes from './routes/pagesRoutes.js';
+import apiRoutes from './routes/apiRoutes.js';
+
 
 dotenv.config();
 
@@ -22,7 +24,10 @@ app.use(
 	}),
 );
 
+// Routes
+app.use('/api', apiRoutes);
 app.use('/', pagesRoutes);
+
 
 const start = async () => {
 	const dbErr = await testConnection();
@@ -30,7 +35,8 @@ const start = async () => {
 
 	app.listen(PORT, (err) => {
 		if (err) return console.error("Server errror: ", err);
-		console.log(`Server OK\nhttp://localhost:${PORT}/`);
+		console.log(`Server OK:\nhttp://localhost:${PORT}/`);
+		console.log(`Api Check:\nhttp://localhost:${PORT}/user.html`);
 	});
 };
 

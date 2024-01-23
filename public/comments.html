@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Api test</title>
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td,
+    th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <a href="/user.html">Users</a>
+    <a href="/blogs.html">Blogs</a>
+    <a href="/comments.html">Comments</a>
+  </nav>
+
+  <h2>Comments Table</h2>
+  <div id="alert"></div>
+  <table id="dataTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Comment ID</th>
+        <th>Blog ID</th>
+        <th>Parent Comment ID</th>
+        <th>User ID</th>
+        <th>Username</th>
+        <th>Text</th>
+        <th>Created At</th>
+        <th>Views</th>
+        <th>Likes</th>
+        <th>Comments</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</body>
+<script>
+  // Function to create Edit and Delete buttons
+  function createButtons(row) {
+    const editButton = document.createElement('button');
+    editButton.textContent = 'Edit';
+    editButton.addEventListener('click', (e) => handleEdit(row, e));
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.addEventListener('click', () => handleDelete(row));
+
+    const actionsCell = row.insertCell(11);
+    actionsCell.appendChild(editButton);
+    actionsCell.appendChild(deleteButton);
+  }
+
+  // Event handler for Edit button
+  let editBool = true;
+
+  function handleEdit(row, e) {
+    const blogId = row.cells[1].textContent;
+    const textCell = row.cells[6];
+    if (editBool) {
+      // change bg color and make cell editable
+      textCell.contentEditable = true;
+      textCell.style.backgroundColor = '#ffffcc';
+      // save old data in cell attribute
+      textCell.setAttribute('old-data', textCell.textContent);
+      e.target.innerHTML = "Submit";
+      editBool = false;
+    } else {
+      if (confirm("Edit that text?")) {
+        // data to db and clean attribute 
+        const xhttp = new XMLHttpRequest();
+        const formData = new FormData();
+
+        formData.append("blogId", blogId);
+        formData.append("text", textCell.textContent);
+
+        xhttp.onload = function() {
+          const result = JSON.parse(this.responseText);
+          console.log(this.status);
+          myAlert(result);
+          if (this.status == 200) {
+            // disable cell edit change bg and btn name
+            textCell.contentEditable = false;
+            textCell.style.backgroundColor = '';
+            e.target.innerHTML = "Edit";
+            editBool = true;
+          }
+        };
+
+        xhttp.open("PUT", "/api/comments");
+        xhttp.send(formData);
+        textCell.setAttribute('old-data', "");
+      } else {
+        // get old cell data
+        const data = textCell.getAttribute('old-data');
+        textCell.textContent = data;
+        // disable cell edit change bg and btn name
+        textCell.contentEditable = false;
+        textCell.style.backgroundColor = '';
+        e.target.innerHTML = "Edit";
+        editBool = true;
+      }
+    }
+  }
+
+  // Event handler for Delete button
+  function handleDelete(row) {
+    const blogId = row.cells[1].textContent;
+    if (confirm("Delete that blog?")) {
+      const xhttp = new XMLHttpRequest();
+      const formData = new FormData();
+
+      formData.append("blogId", blogId);
+
+      xhttp.onload = function() {
+        const result = JSON.parse(this.responseText);
+        myAlert(result);
+      };
+
+      xhttp.open("DELETE", "/api/comments");
+      xhttp.send(formData);
+      row.remove();
+    }
+  }
+
+  // for validation alerts
+  const alert = document.querySelector("#alert");
+
+  function myAlert(res) {
+    console.log(res);
+    alert.innerHTML = (Array.isArray(res) ? res : [res]).map(r => `<b>${r.msg}</b>`)
+  }
+
+  fetch('/api/comments')
+    .then(response => response.json())
+    .then(data => {
+      // Insert data into the table
+      const tableBody = document.querySelector('#dataTable tbody');
+
+      // Assuming the JSON response is an array of objects
+      data.forEach((item, i) => {
+        const row = tableBody.insertRow();
+
+        // Assuming the order of properties matches the table columns
+        row.insertCell(0).textContent = i;
+        row.insertCell(1).textContent = item.id;
+        row.insertCell(2).textContent = item.blog_id;
+        row.insertCell(3).textContent = item.comment_id ?? "null";
+        row.insertCell(4).textContent = item.userId;
+        row.insertCell(5).textContent = item.username;
+        row.insertCell(6).textContent = item.text;
+        row.insertCell(7).textContent = new Date(item.created_at).toLocaleString();
+        row.insertCell(8).textContent = item.views;
+        row.insertCell(9).textContent = item.likes;
+        row.insertCell(10).textContent = item.comments;
+
+        createButtons(row)
+      });
+    })
+    .catch(error => console.error('Error fetching data:', error));
+</script>
+
+</html>

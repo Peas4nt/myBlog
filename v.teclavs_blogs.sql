@@ -1,6 +1,6 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               10.4.27-MariaDB - mariadb.org binary distribution
+-- Server version:               10.4.32-MariaDB - mariadb.org binary distribution
 -- Server OS:                    Win64
 -- HeidiSQL Version:             12.3.0.6589
 -- --------------------------------------------------------
@@ -103,10 +103,10 @@ CREATE TABLE IF NOT EXISTS `vt_users` (
 -- Dumping structure for table myblog.vt_user_inf
 CREATE TABLE IF NOT EXISTS `vt_user_inf` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `surname` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `name` varchar(40) NOT NULL,
+  `surname` varchar(40) NOT NULL,
+  `email` varchar(40) NOT NULL,
+  `password` varchar(40) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS `vt_user_inf` (
 -- Dumping structure for table myblog.vt_user_profile
 CREATE TABLE IF NOT EXISTS `vt_user_profile` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
+  `username` varchar(40) NOT NULL,
   `img` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
   `created_at` datetime DEFAULT NULL,
